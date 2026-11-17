@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign-in complete · Leonida Live</title>
+<style>
+  body { margin: 0; background: #0d0b14; color: #f3f0f7; font: 17px/1.6 system-ui, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 16px; }
+  p { color: #b4acc4; }
+  code { display: block; word-break: break-all; background: #1c1828; border: 1px solid #3a3350; border-radius: 8px; padding: 14px; color: #18d6c9; }
+  button { margin-top: 12px; padding: 10px 18px; border: 0; border-radius: 8px; background: #ff2d95; color: #fff; font-size: 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Sign-in complete</h1>
+  <p id="msg">Copy this code and paste it where Clipper asks for it. Do not share it with anyone else.</p>
+  <code id="code">(no code in the address)</code>
+  <button id="copy" type="button">Copy code</button>
+</main>
+<script>
+  // TikTok sends the user back here with ?code=...; nothing is sent anywhere, the code is only shown for copying
+  const q = new URLSearchParams(location.search);
+  const code = q.get("code");
+  const out = document.getElementById("code");
+  if (code) out.textContent = code;
+  else if (q.get("error")) { out.textContent = q.get("error") + ": " + (q.get("error_description") || ""); document.getElementById("msg").textContent = "Sign-in was cancelled or failed."; }
+  document.getElementById("copy").onclick = () => navigator.clipboard.writeText(out.textContent);
+</script>
+</body>
+</html>
